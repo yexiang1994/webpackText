@@ -1,0 +1,37 @@
+[
+  {"name":"siteName","value":"站点名称","require":true},
+  {"name":"date","value":"日期","require":true},
+  {"name":"checkMan","value":"检验人","require":true},
+  {"name":"recheckMan","value":"复核人","require":true},
+  {"name":"sv30","value":"SV30(%)"},
+
+  {"name":"pH","type":"title"},
+  {"name":"phIn","value":"进水"},
+  {"name":"phOut","value":"出水"},
+  {"name":"phPercent","value":"去除率"},
+
+  {"name":"CODcr(mg/L)","type":"title"},
+  {"name":"codcrIn","value":"进水"},
+  {"name":"codcrOut","value":"出水"},
+  {"name":"codcrPercent","value":"去除率"},
+
+  {"name":"NH<sub>3</sub>-H(mg/L)","type":"title"},
+  {"name":"nh3hIn","value":"进水"},
+  {"name":"nh3hOut","value":"出水"},
+  {"name":"nh3hPercent","value":"去除率"},
+
+  {"name":"TP(mg/L)","type":"title"},
+  {"name":"tpIn","value":"进水"},
+  {"name":"tpOut","value":"出水"},
+  {"name":"tpPercent","value":"去除率"},
+
+  {"name":"TN(mg/L)","type":"title"},
+  {"name":"tnIn","value":"进水"},
+  {"name":"tnOut","value":"出水"},
+  {"name":"tnPercent","value":"去除率"},
+
+  {"name":"DO(mg/L)","type":"title"},
+  {"name":"doLackOxygen","value":"缺氧池"},
+  {"name":"doLikeOxygen","value":"好氧池"},
+  {"name":"doMBR","value":"MBR膜池"}
+]

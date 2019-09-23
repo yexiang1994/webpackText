@@ -1,0 +1,8 @@
+.alert-model-box{
+    max-height: calc(100vh - 300px);
+    overflow: auto;
+}
+.list-box{
+    height: calc(55px*11);
+    overflow-y: scroll;
+}

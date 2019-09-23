@@ -1,0 +1,22 @@
+[
+  {
+    "name": "请选择状态",
+    "value": ""
+  },
+  {
+    "name": "紧急",
+    "value": "Urgent"
+  },
+  {
+    "name": "高",
+    "value": "High"
+  },
+  {
+    "name": "正常",
+    "value": "Normal"
+  },
+  {
+    "name":"低",
+    "value":"Low"
+  }
+]

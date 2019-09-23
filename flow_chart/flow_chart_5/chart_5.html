@@ -1,0 +1,607 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Demo</title>
+    <style>
+        canvas{
+            display: block;
+            margin:auto;
+        }
+    </style>
+</head>
+<body>
+  <script src="../pixi/pixi.min.js"></script>
+  <!-- <canvas id="myCanvas"></canvas> -->
+  <script type="text/javascript">
+        let Application = PIXI.Application,
+            loader = PIXI.loader,
+            resources = PIXI.loader.resources,
+            Sprite = PIXI.Sprite,
+            Graphics = PIXI.Graphics,
+            Text = PIXI.Text,
+            TextStyle = PIXI.TextStyle,
+            Ticker = PIXI.ticker.Ticker,
+            Container = PIXI.Container;
+
+        let bgColor = 0x009D9A;
+        PIXI.utils.skipHello()
+        let app = new PIXI.Application({
+            width: 1025,
+            height: 605,
+            backgroundColor:bgColor,
+            forceCanvas: true,
+            // view:document.querySelector("#myCanvas")
+        });
+        document.body.appendChild(app.view);
+
+        let canvasWidth = app.renderer.view.width,
+            canvasHeight = app.renderer.view.height;
+
+        //画文本，默认容器是根容器 app.stage
+        function drawText(textObj={textStr:"no text",style:{},px:0,py:0,align:false,container:app.stage}){
+            let message = new Text(textObj.textStr,textObj.style);
+            //以文本左上角还是文本正中定位
+            if(textObj.align){
+	            message.anchor.set(0.5, 0.5)
+            }
+            message.position.set(textObj.px, textObj.py);
+            if(textObj.container == undefined){
+	            app.stage.addChild(message);
+            }else{
+	            textObj.container.addChild(message);
+            }
+        }
+        //画简单矩形
+        function drawMyFillRect(rectObj={fillColor:0x000000,w:0,h:0,px:0,py:0,container:app.stage}){
+	        let rectangle = new Graphics();
+	        rectangle.beginFill(rectObj.fillColor);
+	        rectangle.drawRect(0, 0, rectObj.w, rectObj.h);
+	        rectangle.endFill();
+	        rectangle.position.set(rectObj.px,rectObj.py);
+	        rectObj.container.addChild(rectangle);
+        }
+        function drawMyStrokeRect(rectObj={strokeColor:0xffffff,w:0,h:0,px:0,py:0,container:app.stage}){
+	        let rectangle = new Graphics();
+	        rectangle.lineStyle(2,rectObj.strokeColor,1);
+	        rectangle.drawRect(0, 0, rectObj.w, rectObj.h);
+	        rectangle.position.set(rectObj.px,rectObj.py);
+	        drawLine(rectObj.strokeColor,rectObj.px,rectObj.py,rectObj.px+rectObj.w,rectObj.py+rectObj.h,2,rectObj.container)
+	        drawLine(rectObj.strokeColor,rectObj.px,rectObj.py+rectObj.h,rectObj.px+rectObj.w,rectObj.py,2,rectObj.container)
+	        rectObj.container.addChild(rectangle);
+        }
+        function drawStrokeRect(rectObj={strokeColor:0xffffff,w:0,h:0,px:0,py:0,lineWidth:4,container:app.stage}){
+	        let rectangle = new Graphics();
+	        rectangle.lineStyle(rectObj.lineWidth,rectObj.strokeColor,1);
+	        rectangle.drawRect(0, 0, rectObj.w, rectObj.h);
+	        rectangle.position.set(rectObj.px,rectObj.py);
+	        rectObj.container.addChild(rectangle);
+        }
+        //画直线
+        function drawLine(color,startX,startY,endX,endY,lineWidth=2,container=app.stage){
+	        let line = new Graphics();
+	        line.lineStyle(lineWidth, color, 1);
+	        line.moveTo(startX, startY);
+	        line.lineTo(endX, endY);
+	        container.addChild(line);
+        }
+        //画直线并带矩形
+        function drawLineWithRect(color,rectColor,startX,startY,endX,endY,lineWidth=2,container=app.stage){
+	        let line = new Graphics();
+	        line.lineStyle(lineWidth, color, 1);
+	        line.moveTo(startX, startY);
+	        line.lineTo(endX, endY);
+	        container.addChild(line);
+	        drawSpaceRect(rectColor,startX,startY,endX,endY,container);
+        }
+        function drawSpaceRect(rectColor,startX,startY,endX,endY,container) {
+	        //draw rect
+	        if(startY === endY){
+		        if(startX <= endX){  //to right
+			        let i=0;
+			        while(startX + 10*i <= endX){
+				        drawMyFillRect({fillColor: rectColor,w:5,h:5,px:startX + 10*i,py:startY-5/2,container:container});
+				        i++;
+			        }
+		        }else{  //to left
+			        let i=0;
+			        while(startX - 10*i >= endX){
+				        drawMyFillRect({fillColor: rectColor,w:5,h:5,px:startX - 10*i,py:startY-5/2,container:container});
+				        i++;
+			        }
+		        }
+	        }else if(startX === endX){
+		        if(startY <= endY){  //to down
+			        let i=0;
+			        while(startY + 10*i <= endY){
+				        drawMyFillRect({fillColor: rectColor,w:5,h:5,px:startX - 5/2,py:startY + 10*i,container:container});
+				        i++;
+			        }
+		        }else{  //to up
+			        let i=0;
+			        while(startY - 10*i >= endY){
+				        drawMyFillRect({fillColor: rectColor,w:5,h:5,px:startX - 5/2,py:startY - 10*i,container:container});
+				        i++;
+			        }
+		        }
+	        }
+        }
+        //根据坐标点数组就画线以及线中的箭头
+        function drawNewArrow(arrowColor,arrowHeight,angle,px,py,moveDirection,moveMaxLength,index,pointArray=[],container=app.stage){
+	        let triangle = new Graphics();
+	        triangle.beginFill(arrowColor);
+	        //坐标点：x底边长，y为三角形高
+	        triangle.drawPolygon([
+		        -6, arrowHeight,             //First point
+		        6, arrowHeight,              //Second point
+		        0, 0                 //Third point
+	        ]);
+	        triangle.endFill();
+	        triangle.vx = 1;
+	        triangle.vy = Math.random();
+	        triangle.rotation = angle;
+	        // triangle.rotation = Math.PI/2;
+	        // 顺时针旋转
+	        triangle.x = px;
+	        triangle.y = py;
+	        container.addChild(triangle);
+
+	        if(moveDirection==="toLeft"){
+		        let _ticker = new Ticker()
+		        _ticker.add(delta=>{
+			        if((px-moveMaxLength)<=triangle.x){
+				        triangle.x -= triangle.vx + delta
+			        }else{
+				        container.removeChild(triangle)
+				        doArrowTicker(index,pointArray,arrowHeight,arrowColor,container)
+				        _ticker.stop()
+			        }
+		        })
+		        _ticker.start()
+	        }else if(moveDirection==="toRight"){
+		        let _ticker = new Ticker()
+		        _ticker.add(delta=>{
+			        if((px+moveMaxLength)>=triangle.x){
+				        triangle.x += triangle.vx + delta
+			        }else{
+				        container.removeChild(triangle)
+				        doArrowTicker(index,pointArray,arrowHeight,arrowColor,container)
+				        _ticker.stop()
+			        }
+		        })
+		        _ticker.start()
+	        }else if(moveDirection==="toUp"){
+		        let _ticker = new Ticker()
+		        _ticker.add(delta=>{
+			        if((py-moveMaxLength)<=triangle.y){
+				        triangle.y -= triangle.vy + delta
+			        }else{
+				        container.removeChild(triangle)
+				        doArrowTicker(index,pointArray,arrowHeight,arrowColor,container)
+				        _ticker.stop()
+			        }
+		        })
+		        _ticker.start()
+	        }else if(moveDirection==="toDown"){
+		        let _ticker = new Ticker()
+		        _ticker.add(delta=>{
+			        if((py+moveMaxLength)>=triangle.y){
+				        triangle.y += triangle.vy + delta
+			        }else{
+				        container.removeChild(triangle)
+				        doArrowTicker(index,pointArray,arrowHeight,arrowColor,container)
+				        _ticker.stop()
+			        }
+		        })
+		        _ticker.start()
+	        }
+        }
+        function doArrowTicker(index,pointArray=[],arrowHeight,arrowColor,container=app.stage){
+	        if(index < pointArray.length-1){
+		        let startPoint = pointArray[index],endPoint = pointArray[index+1];
+		        if(startPoint.x === endPoint.x){
+			        startPoint.y > endPoint.y ?
+				        drawNewArrow(arrowColor,arrowHeight,0,startPoint.x,startPoint.y-arrowHeight,"toUp",startPoint.y-endPoint.y-arrowHeight,index+1,pointArray,container)
+				        :
+				        drawNewArrow(arrowColor,arrowHeight,Math.PI,startPoint.x,startPoint.y+arrowHeight,"toDown",endPoint.y-startPoint.y-arrowHeight,index+1,pointArray,container)
+		        }else if(startPoint.y === endPoint.y){
+			        startPoint.x > endPoint.x ?
+				        drawNewArrow(arrowColor,arrowHeight,Math.PI*3/2,startPoint.x-arrowHeight,startPoint.y,"toLeft",startPoint.x-endPoint.x-arrowHeight,index+1,pointArray,container)
+				        :
+				        drawNewArrow(arrowColor,arrowHeight,Math.PI/2,startPoint.x+arrowHeight,startPoint.y,"toRight",endPoint.x-startPoint.x-arrowHeight,index+1,pointArray,container)
+		        }
+	        }else{
+		        doArrowTicker(0,pointArray,arrowHeight,arrowColor,container)
+	        }
+        }
+        function drawLineFromPointers(lineColor,arrowColor,lineWidth,pointArray=[],arrowHeight,container=app.stage,drawArrow=true) {
+	        if(pointArray.length >= 2){
+		        for (let i = 0; i < pointArray.length-1; i++) {
+			        let startPoint = pointArray[i],endPoint = pointArray[i+1];
+			        drawLine(lineColor,startPoint.x,startPoint.y,endPoint.x,endPoint.y,lineWidth,container)
+		        }
+		        if(drawArrow){
+			        doArrowTicker(0,pointArray,arrowHeight,arrowColor,container)
+		        }
+	        }else{
+		        console.log("array length is too short")
+	        }
+        }
+        function drawRectLineFromPointers(lineColor,arrowColor,rectColor,lineWidth,pointArray=[],arrowHeight,container=app.stage,drawArrow=true) {
+	        if(pointArray.length >= 2){
+		        for (let i = 0; i < pointArray.length-1; i++) {
+			        let startPoint = pointArray[i],endPoint = pointArray[i+1];
+			        drawLineWithRect(lineColor,rectColor,startPoint.x,startPoint.y,endPoint.x,endPoint.y,lineWidth,container)
+		        }
+		        if(drawArrow){
+			        doArrowTicker(0,pointArray,arrowHeight,arrowColor,container)
+		        }
+	        }else{
+		        console.log("array length is too short")
+	        }
+        }
+        //waterHeight按容器高度百分比计算
+        function drawWhiteContainer(outlineColor,waterColor,w,h,px,py, waterLine={showWater:false,inWater:false,waterHeight:0,animate:true}, container=app.stage){
+	        if(waterLine.showWater){
+		        let water = new Graphics();
+		        water.beginFill(waterColor);
+		        water.drawRoundedRect(0, 0, w, h, 0)
+		        water.endFill();
+		        water.position.set(px,py)
+		        container.addChild(water);
+		        if(waterLine.animate){
+			        //水位变化
+			        if(waterLine.inWater){
+				        let _waterHeight = waterLine.waterHeight*h;
+				        let _ticker = new Ticker()
+				        _ticker.add(delta=>{
+					        if(_waterHeight<h){
+						        _waterHeight += 0.6;
+						        water.height = _waterHeight;
+						        water.y = py+(h-_waterHeight);
+					        }else{
+						        _waterHeight = waterLine.waterHeight*h;
+						        setTimeout(function(){
+							        _ticker.stop()
+						        },17)
+					        }
+				        })
+				        _ticker.start()
+			        }else{
+				        let _waterHeight = waterLine.waterHeight*h;
+				        app.ticker.add(delta=>{
+					        if(_waterHeight>0){
+						        _waterHeight -= 0.6;
+						        water.height = _waterHeight;
+						        water.y = py+(h-_waterHeight);
+					        }else{
+						        _waterHeight = waterLine.waterHeight*h;
+					        }
+				        })
+			        }
+                }else{
+			        let _waterHeight = waterLine.waterHeight*h;
+			        water.height = _waterHeight;
+			        water.y = py+(h-_waterHeight);
+                }
+            }
+	        let rectangle = new Graphics();
+	        rectangle.lineStyle(4, outlineColor, 1);
+	        rectangle.drawRect(0, 0, w, h);
+	        rectangle.position.set(px,py)
+	        container.addChild(rectangle);
+	        let line = new Graphics();
+	        line.lineStyle(4, 0x009D9A, 1);
+	        line.moveTo(0, 0);
+	        line.lineTo(w+5, 0);
+	        line.position.set(px-2,py);
+	        container.addChild(line);
+        }
+
+        //颜色集合
+        let lineColor = {
+        	blue:0x0000ff,lightBlue:0xc0ffff,
+            littleRectBlue:0x40e0d0,red:0x8b0000,
+            brownWater:0x808000,yellowWater:0xc0c000,
+            blueWater:0xc0ffff,white:0xffffff,
+            gray:0xc0c0c0,pink:0xffe4e1,
+            waterEntry:0xd2b48c
+        },waterColor = 0x40a4df;
+
+        //分组信息：
+        //1.FirstRow 池子上方部分
+        let FirstRow = new Container();
+            FirstRow.position.set(0,15);
+            app.stage.addChild(FirstRow);
+            drawText({textStr:"津水环保工艺流程图",style:{fontSize:24},px:canvasWidth/2,py:5,align:true,container:FirstRow})
+            drawText({textStr:"2018/09/15 SAT   14:51:46",style:{fontSize:20},px:canvasWidth-150,py:5,align:true,container:FirstRow})
+
+        //2.SecondRow 池子
+        let SecondRow = new Container();
+            SecondRow.position.set(0,15);
+            app.stage.addChild(SecondRow);
+            drawText({textStr:"格栅",style:{fontSize:15},px:20,py:192,container:SecondRow})
+            drawLine(0x804040,27,185+65,50,185-45+65,2,SecondRow)
+            drawLine(0x804040,37,185+65,58,185-43+65,2,SecondRow)
+            drawLine(0x804040,47,185+65,67,185-39+65,2,SecondRow)
+            drawLine(0x804040,50,185-45+65,67,185-39+65,2,SecondRow)
+            drawMyFillRect({fillColor: lineColor.waterEntry,w:60,h:20,px:10,py:185+65,container:SecondRow})
+            drawText({textStr:"污水\n入口",style:{fontSize:15},px:25,py:210+65,container:SecondRow})
+
+        //3.池子 下方
+        let ThirdRow = new Container()
+            ThirdRow.position.set(0,15)
+            app.stage.addChild(ThirdRow)
+
+        //加载图片并分组
+        loader.add([
+            "imgs/5_1.png",
+	        "imgs/5_2.png",
+	        "imgs/5_3.png",
+	        "imgs/5_4.png",
+	        "imgs/5_5.png",
+	        "imgs/5_6.png",
+	        "imgs/5_7.png",
+	        "imgs/5_8.png",
+	        "imgs/5_9.png",
+	        "imgs/5_10.png",
+	        "imgs/5_11.png",
+            ]).load(setupPictures);
+        //定位图片
+        function locatePicturesPos(imgPath,px,py,container=app.stage){
+            let img = new PIXI.Sprite(resources[imgPath].texture);
+            img.position.set(px, py)
+            container.addChild(img)
+            return img;
+        }
+        function setupPictures() {
+	        //FirstRow (0,0)
+	        locatePicturesPos("imgs/5_9.png",350,80,FirstRow)
+	        drawText({textStr:"乙酸钠",style:{fontSize:15},px:365,py:170,container:FirstRow})
+
+	        locatePicturesPos("imgs/5_10.png",515-40,80,FirstRow)
+	        drawText({textStr:"PAC",style:{fontSize:15},px:510-30,py:170,container:FirstRow})
+
+	        locatePicturesPos("imgs/5_8.png",615-40,80,FirstRow)
+	        drawText({textStr:"次氯酸钠",style:{fontSize:15},px:610-40,py:170,container:FirstRow})
+
+	        //SecondRow (0,0)
+	        locatePicturesPos("imgs/5_5.png",80,280,SecondRow)
+	        locatePicturesPos("imgs/5_7.png",80,310,SecondRow)
+
+	        locatePicturesPos("imgs/5_1.png",114,289,SecondRow)
+	        drawText({textStr:"1#提升泵",style:{fontSize:15},px:88,py:332,container:SecondRow})
+	        locatePicturesPos("imgs/5_1.png",172,289,SecondRow)
+	        drawText({textStr:"2#提升泵",style:{fontSize:15},px:152,py:332,container:SecondRow})
+
+	        locatePicturesPos("imgs/5_2.png",228,290,SecondRow)
+	        drawText({textStr:"1#鼓风机",style:{fontSize:15},px:225,py:270,container:SecondRow})
+	        locatePicturesPos("imgs/5_2.png",228,365,SecondRow)
+	        drawText({textStr:"2#鼓风机",style:{fontSize:15},px:225,py:345,container:SecondRow})
+            //好氧池
+	        locatePicturesPos("imgs/5_1.png",480,332,SecondRow)
+	        drawText({textStr:"污泥回流泵",style:{fontSize:15},px:465,py:375,container:SecondRow})
+            drawStrokeRect({strokeColor:lineColor.lightBlue,w:100,h:55,px:585,py:335,lineWidth:4,container:SecondRow})
+            for (let i=0;i<8;i++){
+	            drawLine(lineColor.white,585+((i+1)*5),335,585+((i+1)*5),390,2,SecondRow)
+            }
+	        drawLine(lineColor.lightBlue,636,335,636,390,16,SecondRow)
+	        for (let i=0;i<8;i++){
+		        drawLine(lineColor.white,641+((i+1)*5),335,641+((i+1)*5),390,2,SecondRow)
+	        }
+            //灯
+	        locatePicturesPos("imgs/5_6.png",725,315,SecondRow)
+	        locatePicturesPos("imgs/5_5.png",725,335,SecondRow)
+	        locatePicturesPos("imgs/5_7.png",725,355,SecondRow)
+            //灯
+	        locatePicturesPos("imgs/5_6.png",880,315,SecondRow)
+	        locatePicturesPos("imgs/5_5.png",880,335,SecondRow)
+	        locatePicturesPos("imgs/5_7.png",880,355,SecondRow)
+            //反洗泵以及文字
+	        locatePicturesPos("imgs/5_3.png",925,373,SecondRow)
+	        drawText({textStr:"反洗泵",style:{fontSize:15},px:940,py:350,container:SecondRow})
+	        locatePicturesPos("imgs/5_11.png",925,303,SecondRow)
+	        drawText({textStr:"反洗阀",style:{fontSize:15},px:940,py:280,container:SecondRow})
+
+	        locatePicturesPos("imgs/5_11.png",860,200,SecondRow)
+	        drawText({textStr:"产水阀",style:{fontSize:15},px:880,py:180,container:SecondRow})
+	        let im = locatePicturesPos("imgs/5_11.png",880,70,SecondRow);
+	            im.rotation = 4.7;
+	        drawText({textStr:"外排阀",style:{fontSize:15},px:820,py:40,container:SecondRow})
+
+	        drawText({textStr:"达标排放口",style:{fontSize:15},px:890,py:80,container:SecondRow})
+
+	        drawStrokeRect({strokeColor:lineColor.white,w:50,h:35,px:800,py:150,lineWidth:2,container:SecondRow})
+            drawMyFillRect({fillColor: lineColor.white,w:10,h:10,px:835,py:150+10,container:SecondRow})
+	        drawText({textStr:"1#产水泵",style:{fontSize:15},px:790,py:190,container:SecondRow})
+
+	        drawStrokeRect({strokeColor:lineColor.white,w:50,h:35,px:705,py:150,lineWidth:2,container:SecondRow})
+	        drawMyFillRect({fillColor: lineColor.white,w:10,h:10,px:710,py:150+10,container:SecondRow})
+	        drawText({textStr:"2#产水泵",style:{fontSize:15},px:700,py:190,container:SecondRow})
+
+            //ThirdRow 0,0
+	        locatePicturesPos("imgs/5_4.png",205+64,532-7,ThirdRow)
+	        drawText({textStr:"曝气间隔     ##.##     min",style:{fontSize:15},px:205,py:532,container:ThirdRow})
+	        locatePicturesPos("imgs/5_4.png",325+64,467-7,ThirdRow)
+	        drawText({textStr:"产水计时     ##.##     h",style:{fontSize:15},px:325,py:467,container:ThirdRow})
+	        locatePicturesPos("imgs/5_4.png",435+64,532-7,ThirdRow)
+	        drawText({textStr:"产水次数     ##.##     pcs",style:{fontSize:15},px:435,py:532,container:ThirdRow})
+	        locatePicturesPos("imgs/5_4.png",590+64,467-7,ThirdRow)
+	        drawText({textStr:"反洗计时     ##.##     h",style:{fontSize:15},px:590,py:467,container:ThirdRow})
+	        locatePicturesPos("imgs/5_4.png",675+64,532-7,ThirdRow)
+	        drawText({textStr:"反洗次数     ##.##     pcs",style:{fontSize:15},px:675,py:532,container:ThirdRow})
+
+        }
+
+        //SecondRow
+        //调节池
+        drawWhiteContainer(lineColor.red,lineColor.brownWater,148,145,72,208,{showWater:true,waterHeight:0.75,animate:false},SecondRow);
+        drawText({textStr:"调节池",style:{fontSize:15},px:90,py:360,container:SecondRow})
+        //厌氧池,缺氧池
+        drawLine(lineColor.red,213,408,306,408,4,SecondRow)
+        drawWhiteContainer(lineColor.red,lineColor.brownWater,153,158,305,250,{showWater:true,waterHeight:0.65,animate:false},SecondRow);
+        drawLine(lineColor.red,368,251,368,380,4,SecondRow)
+        //白色小杯子
+        let cup_lines = [{x:314-5,y:280+12},{x:322-5,y:280+12},{x:322-5,y:315+12},{x:334-5,y:315+12},{x:334-5,y:280+12},{x:342-5,y:280+12}];
+        drawLine(lineColor.white,316,300,320+10,300,2,SecondRow)
+        drawLine(lineColor.white,316,300+6,320+10,300+6,2,SecondRow)
+        drawLine(lineColor.white,316,300+12,320+10,300+12,2,SecondRow)
+        drawLine(lineColor.white,316,300+18,320+10,300+18,2,SecondRow)
+	    drawLineFromPointers(lineColor.white,lineColor.white,2,cup_lines,24,SecondRow,false)
+
+        drawText({textStr:"厌氧池",style:{fontSize:15},px:317,py:418,container:SecondRow})
+        drawText({textStr:"缺氧池",style:{fontSize:15},px:400,py:418,container:SecondRow})
+
+        //好氧池
+        drawWhiteContainer(lineColor.red,lineColor.yellowWater,285,157,458,251,{showWater:true,waterHeight:0.65,animate:false},SecondRow);
+        drawLine(bgColor,458,251,458,278,4,SecondRow)
+        drawText({textStr:"好氧池",style:{fontSize:15},px:578,py:418,container:SecondRow})
+
+        //清水池
+        drawWhiteContainer(lineColor.red,lineColor.blueWater,155,157,458+285,251,{showWater:true,waterHeight:0.65,animate:false},SecondRow);
+        drawText({textStr:"清水池",style:{fontSize:15},px:800,py:418,container:SecondRow})
+        //反洗
+        drawLine(lineColor.red,900,408,980,408,4,SecondRow)
+
+        //蓝色小X矩形
+        drawMyStrokeRect({strokeColor:lineColor.blue,w:6,h:25,px:365,py:381,container:SecondRow})
+        drawMyStrokeRect({strokeColor:lineColor.blue,w:6,h:25,px:455,py:252,container:SecondRow})
+
+        //空矩形线条
+        function strokeRectLine(strokeColor,rectColor,w,h,px,py,container){
+	        let rectangle = new Graphics();
+	        rectangle.lineStyle(2,strokeColor,1);
+	        rectangle.drawRect(0, 0, w, h);
+	        rectangle.position.set(px-4,py);
+	        container.addChild(rectangle);
+            if(w<=h){
+	            let start = {x:px,y:py},end = {x:px,y:py+h};
+	            drawSpaceRect(rectColor,start.x,start.y,end.x,end.y-5,container);
+            }else{
+	            let start = {x:px,y:py},end = {x:px+w,y:py};
+	            drawSpaceRect(rectColor,start.x,start.y+4,end.x-5,end.y+4,container);
+            }
+
+        }
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,260,8,680,20,SecondRow)
+        //反洗阀
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,8,360,932,20,SecondRow)
+        //反洗泵
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,24,8,905,380,SecondRow)
+        //产水阀
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,8,260,867,70,SecondRow)
+        //1#产水泵
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,180,8,740,60,SecondRow)
+
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,8,80,810,70,SecondRow)
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,8,40,810,185,SecondRow)
+        //2#产水泵
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,8,80,740,70,SecondRow)
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,8,40,715,185,SecondRow)
+
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,130,8,690,225,SecondRow)
+        //好氧池
+        strokeRectLine(lineColor.white,lineColor.littleRectBlue,8,312,680,20,SecondRow)
+        //好氧池,缺氧池
+        strokeRectLine(lineColor.white,lineColor.brownWater,8,60,445,250,SecondRow)
+        strokeRectLine(lineColor.white,lineColor.brownWater,8,120,475,250,SecondRow)
+
+        strokeRectLine(lineColor.white,lineColor.brownWater,38,8,445,240,SecondRow)
+
+        //lines
+        let white_lines = [
+	        [{x:377,y:80},{x:377,y:65},{x:428,y:65},{x:428,y:310}],
+	        [{x:397+105,y:80},{x:397+105,y:65},{x:448+105,y:65},{x:448+105,y:310}],
+	        [{x:397+205,y:80},{x:397+205,y:65},{x:448+205,y:65},{x:448+205,y:250},{x:760,y:250},{x:760,y:310}]
+        ];
+        white_lines.forEach(item=>{
+	        drawLineFromPointers(lineColor.white,lineColor.white,4,item,24,SecondRow)
+        })
+
+        let gray_lines = [
+	        [{x:109,y:315},{x:109,y:195},{x:323,y:195},{x:323,y:310}],
+	        [{x:99+70,y:315},{x:99+70,y:195},{x:323,y:195},{x:323,y:310}]
+        ];
+        gray_lines.forEach(item=>{
+	        drawRectLineFromPointers(lineColor.gray,lineColor.gray,lineColor.brownWater,4,item,24,SecondRow)
+        })
+
+        let pink_lines_two = [
+	        [{x:255,y:297},{x:287,y:297},{x:287,y:228},{x:572,y:228},{x:572,y:400}],
+	        [{x:255,y:297},{x:287,y:297},{x:287,y:228},{x:572,y:228},{x:572,y:255},{x:608,y:255},{x:608,y:333}],
+        ]
+        pink_lines_two.forEach(item=>{
+	        drawLineFromPointers(lineColor.pink,lineColor.pink,4,item,24,SecondRow)
+        })
+        //短横线
+        drawRectLineFromPointers(lineColor.pink,lineColor.pink,lineColor.white,4,[{x:255,y:297},{x:287,y:297}],24,SecondRow,false)
+        let pink_lines = [
+	        [{x:255,y:372},{x:287,y:372},{x:287,y:228},{x:572,y:228},{x:572,y:400}],
+	        [{x:255,y:372},{x:287,y:372},{x:287,y:228},{x:572,y:228},{x:572,y:255},{x:608,y:255},{x:608,y:333}],
+
+            [{x:464,y:398},{x:735,y:398}]
+        ];
+        pink_lines.forEach(item=>{
+	        drawRectLineFromPointers(lineColor.pink,lineColor.pink,lineColor.white,4,item,24,SecondRow)
+        })
+
+        //生成上冒的水泡
+        function drawMyCircle(fillColor,outlineColor,outlineWidth,radius,px,py,container=app.stage){
+	        let circle = new Graphics();
+	        circle.beginFill(fillColor);
+	        circle.lineStyle(outlineWidth, outlineColor);
+	        circle.drawCircle(0, 0, radius);
+	        circle.endFill();
+	        circle.position.set(px,py)
+	        container.addChild(circle);
+	        return circle;
+        }
+        function generateBuble(px,py,speedX,speedY,maxOffssetY,container){
+	        let buble = drawMyCircle(lineColor.yellowWater,lineColor.white,1,5,px,py,container),i=0;
+	        app.ticker.add(delta=>{
+		        i++;
+		        if(buble.y>(py-maxOffssetY)){
+			        // i%2 == 0 ? buble.x -= Math.random()*speedX : buble.x += Math.random()*speedX
+			        // 水泡在X轴的范围：5~width+5 (以容器原点为起点进行偏移计算)
+			        if(i%2 === 0){
+				        let temp = Math.random()*speedX;
+				        if(buble.x - temp <= (5) ){
+					        buble.x += temp;
+				        }
+				        buble.x -= temp
+			        }else{
+				        let temp = Math.random()*speedX;
+				        if(buble.x + temp >= (container.width+5) ){
+					        buble.x -= temp;
+				        }
+				        buble.x += temp
+			        }
+			        buble.y -= Math.random()*speedY;
+		        }else{
+			        buble.y = py;
+			        if(i%2 === 0){
+				        buble.x = px + 3;
+                    }else{
+				        buble.x = px - 3;
+                    }
+		        }
+	        })
+        }
+        let BubleContainer = new Container();
+        //n处位置分别循环输出水泡
+        function animateBuble(loopCount = 1,eachLoopBubleCount=12,offset=30){
+        	for(let i=0;i<loopCount;i++){
+		        for(let j=0;j<eachLoopBubleCount;j++){
+			        setTimeout(function(){
+				        generateBuble(20+(i*offset),160,2,1.5,80,BubleContainer)
+			        },Math.random()*i*1700)
+		        }
+            }
+        }
+        animateBuble(9,8,30);
+        BubleContainer.position.set(464,235)
+        SecondRow.addChild(BubleContainer)
+
+  </script>
+</body>
+</html>

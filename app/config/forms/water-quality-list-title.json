@@ -1,0 +1,23 @@
+[
+    {
+        "title" : "编号",
+        "width" : "15%"
+    },
+    {
+        "title" : "站点名称",
+        "width" : "20%"
+    },
+    {
+        "title" : "水质信息",
+        "width" : "15%",
+        "textAlign": "center"
+    },
+    {
+      "title" : "检测时间",
+      "width" : "30%"
+    },
+    {
+      "title" : "操作",
+      "width" : "20%"
+    }
+]

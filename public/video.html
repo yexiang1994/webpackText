@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+     <meta charset="UTF-8">
+     <meta name="viewport"   content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+     <title>用户测试用例</title>
+     <link rel="stylesheet" href="./aliplayer-min.css" />
+     <script type="text/javascript" src="./aliplayer-min.js"></script>
+     <script type="text/javascript" src="./json.min.js"></script>
+     
+    </head>
+    <body>
+        <div  class="prism-player" id="J_prismPlayer" style="position: absolute"></div>
+        <script>
+            var player = new Aliplayer({
+            id: 'J_prismPlayer',
+            width: '90%',
+            height: "90%",
+            cover : "http://img1.cache.netease.com/catchpic/3/3E/3E50137D16367379C86000DC905055CB.jpg",
+            isLive : true,
+            snapshot: true,
+            autoplay: true,
+            //支持播放地址播放,此播放优先级最高
+            source : 'rtmp://10.168.3.131:1935/myapp/Sheep'
+            //source : 'rtmp://demo1.huile.me/AppName/StreamName?auth_key=1527098361-0-0-fcb258578984c35fb4ec74212a9d92ab'
+            
+            },function(player){
+                console.log('播放器创建好了。')
+                player.play();
+           });
+            
+            function playAudio() {
+            	//player.play();
+            	console.log("play btn");
+            }
+            function pauseAudio() {
+            	console.log("pause btn");
+            }
+        </script>
+    </body>
+</html>

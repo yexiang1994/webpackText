@@ -1,0 +1,18 @@
+[
+  {"name":"townName","type":"text","value":"镇名","require":true},
+  {"name":"countrysideName","type":"text","value":"村名","require":true},
+  {"name":"siteName","type":"text","value":"站点名称","require":true},
+  {"name":"alcl","type":"number","value":"聚合氯化铝"},
+  {"name":"feso","type":"number","value":"聚合硫酸铁"},
+  {"name":"fecl","type":"number","value":"聚合氯化铁"},
+  {"name":"cho","type":"number","value":"葡萄糖"},
+  {"name":"chcoona","type":"number","value":"乙酸钠"},
+  {"name":"c6h8o7","type":"number","value":"柠檬酸"},
+  {"name":"naclo","type":"number","value":"次氯酸钠"},
+  {"name":"naoh","type":"number","value":"氢氧化钠"},
+  {"name":"electricCost","type":"number","value":"电费","require":true},
+  {"name":"electricVolume","type":"number","value":"电量","require":true},
+  {"name":"waterVolume","type":"number","value":"水量","require":true},
+  {"name":"recordMan","type":"text","value":"巡视人","require":true},
+  {"name":"acceptMan","type":"text","value":"审核人","require":true}
+]

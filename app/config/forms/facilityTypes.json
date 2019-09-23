@@ -1,0 +1,8 @@
+[
+  {"name":"scale","value":"污水站规模","require":true},
+  {"name":"facilityName","value":"设施名称","require":true},
+  {"name":"maintainRecord","value":"维修记录","require":true},
+  {"name":"acceptRecord","value":"验收记录","require":true},
+  {"name":"recordMan","value":"记录人","require":true},
+  {"name":"acceptMan","value":"验收人","require":true}
+]

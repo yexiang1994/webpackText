@@ -1,0 +1,17 @@
+[
+  {"name":"townName","value":"镇名","require":true},
+  {"name":"countrysideName","value":"村名","require":true},
+  {"name":"groupStr","value":"班组","require":true},
+  {"name":"","value":"","require":false},
+  {"name":"mainPipe","value":"主干管网备注","require":false,"groupField":"comment"},
+  {"name":"mainPipeState","value":"主干管网状态","require":true,"groupField":"state"},
+  {"name":"mainCheck","value":"主干检查井备注","require":false,"groupField":"comment"},
+  {"name":"mainCheckState","value":"主干检查井状态","require":true,"groupField":"state"},
+  {"name":"homePipe","value":"入户管网备注","require":false,"groupField":"comment"},
+  {"name":"homePipeState","value":"入户管网状态","require":true,"groupField":"state"},
+  {"name":"homePool","value":"入户化粪池备注","require":false,"groupField":"comment"},
+  {"name":"homePoolState","value":"入户化粪池状态","require":true,"groupField":"state"},
+  {"name":"maintainRecord","value":"巡视维护记录","require":true},
+  {"name":"inspector","value":"巡视人","require":true},
+  {"name":"principal","value":"负责人","require":true}
+]

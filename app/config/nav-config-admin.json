@@ -1,0 +1,65 @@
+{
+    "navList" : [
+        {
+			"key" : "nav-0",
+			"title" : "数据概览",
+			"link" : "/dashboard",
+			"icon" : "iconsignal"
+		},
+		{
+			"key" : "nav-1",
+			"title" : "站点管理",
+			"link" : "/site-list",
+            "icon" : "iconmodify"
+		},
+        {
+          "key" : "nav-8",
+          "title" : "维护管理",
+          "link" : "/maintain",
+          "icon" : "iconding"
+        },
+        {
+          "key" : "nav-10",
+          "title" : "维修管理",
+          "link" : "/service",
+          "icon" : "iconding"
+        },
+		{
+			"key" : "nav-3",
+			"title" : "警报管理",
+			"link" : "/alarm",
+            "icon" : "iconbaojing"
+		},
+		{
+			"key" : "nav-13",
+			"title" : "工单管理",
+			"link" : "/case-list",
+            "icon" : "icongongdan"
+		},
+        {
+          "key" : "nav-card",
+          "title" : "打卡管理",
+          "link" : "/card-manage-list",
+          "icon" : "iconbuqian"
+        },
+        {
+          "key" : "nav-car",
+          "title" : "车辆管理",
+          "link" : "/car-manage-list",
+          "icon" : "iconcheliang"
+        },
+        {
+          "key" : "nav-5",
+          "title" : "账号管理",
+          "link" : "/person-list",
+          "icon" : "iconconfig--shixin"
+        },
+		{
+			"key": "nav-9",
+			"title": "重置密码",
+      "link": "/reset-password",
+      "icon": "iconzhongzhimima"
+		}
+	
+    ]
+}

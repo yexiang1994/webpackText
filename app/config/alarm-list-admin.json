@@ -1,0 +1,31 @@
+[
+    {
+        "title" : "编号",
+        "width" : "10%"
+    },
+    {
+        "title" : "站点名称",
+        "width" : "15%"
+    },{
+        "title" : "报警等级",
+        "width" : "10%",
+        "textAlign": "center"
+    },
+    {
+        "title" : "报警类型",
+        "width" : "15%",
+        "textAlign": "center"
+    },
+    {
+        "title" : "报警时间",
+        "width" : "15%"
+    },
+    {
+        "title" : "描述",
+        "width" : "15%"
+    },
+    {
+        "title" : "操作",
+        "width" : "15%"
+    }
+]

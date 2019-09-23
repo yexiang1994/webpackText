@@ -1,0 +1,16 @@
+[
+  {"name":"townName","type":"text","value":"镇名","require":true},
+  {"name":"villageName","type":"text","value":"村名","require":true},
+  {"name":"siteName","type":"number","value":"处理站名称","require":true},
+  {"name":"technology","type":"text","value":"处理工艺","require":true},
+  {"name":"inspectorId","type":"number","value":"巡视人员编号","require":true},
+  {"name":"otherProblem","type":"text","value":"其他问题"},
+
+  {"name":"phosphor","type":"number","value":"除磷剂消耗量(t)"},
+  {"name":"carbon","type":"number","value":"外加碳源量(t)"},
+  {"name":"clona","type":"number","value":"10%次氯酸钠溶液(t)"},
+  {"name":"clonaPiece","type":"number","value":"氯片(kg)"},
+  {"name":"lemon","type":"number","value":"柠檬酸(t)"},
+  {"name":"biology","type":"number","value":"生物制剂(kg)"},
+  {"name":"others","type":"number","value":"其他药剂(t)"}
+]

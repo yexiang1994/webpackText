@@ -1,0 +1,40 @@
+[
+    {
+        "title" : "id",
+        "width" : "5%"
+    },
+    {
+        "title" : "发单人",
+        "width" : "10%"
+    },
+    {
+        "title" : "接单人",
+        "width" : "14%"
+    },
+    {
+        "title" : "站点",
+        "width" : "14%"
+    },
+    {
+        "title" : "状态",
+        "width" : "10%",
+        "textAlign": "center"
+    },
+    {
+        "title" : "紧急程度",
+        "width" : "10%",
+        "textAlign": "center"
+    },
+    {
+        "title" : "创建时间",
+        "width" : "12%"
+    },
+    {
+        "title" : "完成时间",
+        "width" : "12%"
+    },
+    {
+        "title" : "操作",
+        "width" : "16%"
+    }
+]

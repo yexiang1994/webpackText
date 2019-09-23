@@ -1,0 +1,9 @@
+[
+  {"name":"pipeType","value":"管网类型","require":true},
+  {"name":"sizeType","value":"规格型号","require":true},
+  {"name":"maintainRecord","value":"维修记录","require":true},
+  {"name":"acceptRecord","value":"验收记录","require":true},
+  {"name":"recordMan","value":"记录人","require":true},
+  {"name":"maintainMan","value":"维修人","require":true},
+  {"name":"acceptMan","value":"验收人","require":true}
+]

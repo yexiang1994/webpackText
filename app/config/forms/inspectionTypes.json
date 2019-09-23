@@ -1,0 +1,11 @@
+[
+  {"name":"townName","value":"镇名","require":true},
+  {"name":"pipeSite","value":"污水站/管网","require":true},
+  {"name":"siteName","value":"站点名称","require":true},
+  {"name":"devideName","value":"设备名称","require":true},
+  {"name":"pipeType","value":"管网类型","require":true},
+  {"name":"content","value":"维修内容","require":true},
+  {"name":"extraText","value":"备注","require":false},
+  {"name":"recordMan","value":"记录人","require":true},
+  {"name":"acceptMan","value":"审核人","require":true}
+]

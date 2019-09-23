@@ -1,0 +1,30 @@
+[
+  {
+    "name": "请选择用户角色",
+    "value": ""
+  },
+  {
+    "name": "管理员",
+    "value": "Admin"
+  },
+  {
+    "name": "负责人",
+    "value": "Principal"
+  },
+  {
+    "name":"部门主管",
+    "value":"SectionManager"
+  },
+  {
+    "name":"村镇主管",
+    "value":"VillageManager"
+  },
+  {
+    "name":"运维人员",
+    "value":"Maintainer"
+  },
+  {
+    "name": "普通用户",
+    "value": "Normal"
+  }
+]

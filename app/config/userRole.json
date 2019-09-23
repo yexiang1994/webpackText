@@ -1,0 +1,12 @@
+{
+  "admin":"Admin",
+  "principal":"Principal",
+  "sectionManager":"SectionManager",
+  "villageManager":"VillageManager",
+  "maintainer":"Maintainer",
+  "normal":"Normal",
+  "OperationManager": "OperationManager",
+  "MaintainManager": "MaintainManager",
+  "Operator": "Operator"
+
+}

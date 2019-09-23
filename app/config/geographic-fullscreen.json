@@ -1,0 +1,16 @@
+[
+  {
+    "title" : "站点名称",
+    "width" : "20%"
+  },
+  {
+    "title" : "报警等级",
+    "width" : "30%",
+    "textAlign":"center"
+  },
+  {
+    "title" : "报警类型",
+    "width" : "30%",
+    "textAlign":"center"
+  }
+]
