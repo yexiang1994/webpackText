@@ -1,0 +1,16 @@
+{
+    "presets": [
+        "@babel/env",
+        // "@babel/react",
+        "@babel/preset-react"
+    ],
+    "plugins": [
+        ["@babel/plugin-syntax-dynamic-import"],
+        [
+        "@babel/plugin-transform-runtime",
+        {
+            "helpers": false,
+            "regenerator": true
+        }]
+    ]
+}
