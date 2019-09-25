@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import LoginInput from './login-input'
+import BSTable from './../common-view/bs-table'
+import alarm from './../config/alarm'
 import './../style/msg.scss';
 class LoginPageApp extends Component{
 	constructor(props){
@@ -11,7 +13,9 @@ class LoginPageApp extends Component{
     handleLogin() {
         this.props.router.push("/dashboard")
     }
+    bsList(){
 
+    }
     render(){
         return (
             <section id="wrapper">
@@ -57,7 +61,7 @@ class LoginPageApp extends Component{
                             </form>
                         </div>
                         <div className="bodys">
-                        scss-loader
+                            <BSTable titles={alarm} body={this.bsList.bind(this)}></BSTable>
                         </div>
                     </div>
                 </div>

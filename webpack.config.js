@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
+	mode: "development",
 	devtool:'eval-source-map',
 	entry: {
 		app: path.resolve(__dirname + "/app/app.js")

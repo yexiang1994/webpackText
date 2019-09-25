@@ -8,7 +8,8 @@ var ExtracTextPlugin = require("extract-text-webpack-plugin")
 var extractSass = new ExtracTextPlugin("style/[name]-[hash:5].css")
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports = {
-    mode: "production",
+    // mode: "production",
+    mode: "development",
     // devtool:"source-map",
     entry:{
         app: path.resolve(__dirname + "/app/app.js")
@@ -16,8 +17,17 @@ module.exports = {
     output:{
         path: path.resolve(__dirname + "/public/js"),
         filename: "[name]-[hash:5].js",
-        chunkFilename: "[name]-[hash:5].chunk.js"
+        chunkFilename: "[name].[hash].chunk.js"
     },
+
+    // entry:{
+    //     app: path.resolve(__dirname + "/test/main.js")
+    // },
+    // output:{
+    //     path: path.resolve(__dirname + "/dist/js"),
+    //     filename: "[name]-[hash:5].js",
+    //     chunkFilename: "[name].[hash].chunk.js"
+    // },
     module:{
         rules:[
             {
@@ -51,5 +61,15 @@ module.exports = {
             }
         })
         
-    ]
+    ],
+    stats:{
+        reasons: false,
+        version: false,
+        modules: true,
+        cachedAssets: false,
+        assets:true,
+        cached: false,
+        children:false,
+        chunkModules: true,
+    }
 }

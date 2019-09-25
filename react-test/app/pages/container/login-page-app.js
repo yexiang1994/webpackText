@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-
+import BSTable from './../common-view/bs-table'
+import dash from './../config/dash' 
 class LoginPageApp extends Component{
 	constructor(props){
 		super(props);
@@ -13,6 +13,9 @@ class LoginPageApp extends Component{
 	
 	}
     handleLogin(){
+    }
+    bsList() {
+
     }
 
     render(){
@@ -47,6 +50,9 @@ class LoginPageApp extends Component{
                                     </div>
                                 </div>
                             </form>
+                            <div className="bodys">
+                                <BSTable titles={dash} body={this.bsList.bind(this)}></BSTable>
+                            </div>
                         </div>
                     </div>
                 </div>
