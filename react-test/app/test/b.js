@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-export default class B extends Component{
+export default class Bpage extends Component{
 	render() {
 	    return (
             <div>
@@ -8,3 +8,4 @@ export default class B extends Component{
 	    )
 	}
 }
+

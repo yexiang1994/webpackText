@@ -10,16 +10,21 @@ var extractSass = new ExtracTextPlugin("style/[name]-[hash:5].css")
 module.exports = {
     // mode: "production",
     mode: "development",
-    // devtool:"source-map",
+    devtool:"source-map",
     entry:{
         app: path.resolve(__dirname + "/app/app.js")
     },
     output:{
         path: path.resolve(__dirname + "/public/js"),
         filename: "[name]-[hash:5].js",
-        chunkFilename: "[name].[hash].chunk.js"
+        // chunkFilename: "[name].[hash].chunk.js"
     },
-
+    optimization: {
+        mergeDuplicateChunks: true,
+        // splitChunks: {
+        //     chunks: "all"
+        // }
+    },
     // entry:{
     //     app: path.resolve(__dirname + "/test/main.js")
     // },
