@@ -20,10 +20,11 @@ module.exports = {
         // chunkFilename: "[name].[hash].chunk.js"
     },
     optimization: {
-        mergeDuplicateChunks: true,
-        // splitChunks: {
-        //     chunks: "all"
-        // }
+        usedExports: true,
+        // mergeDuplicateChunks: true,
+        splitChunks: {
+            chunks: "all"
+        }
     },
     // entry:{
     //     app: path.resolve(__dirname + "/test/main.js")

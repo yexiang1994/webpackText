@@ -1,0 +1,28 @@
+{
+  "name": "webpack3-10",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "babel-loader": "^8.0.0-beta.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "webpack": "^3.10.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.6.2",
+    "awesome-typescript-loader": "^5.2.1",
+    "ts-loader": "^6.1.2",
+    "typescript": "^3.6.3"
+  }
+}
