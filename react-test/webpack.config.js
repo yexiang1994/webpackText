@@ -9,23 +9,24 @@ var extractSass = new ExtracTextPlugin("style/[name]-[hash:5].css")
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports = {
     // mode: "production",
-    mode: "development",
-    devtool:"source-map",
+    // mode: "development",
+    // devtool:"source-map",
     entry:{
         app: path.resolve(__dirname + "/app/app.js")
     },
     output:{
-        path: path.resolve(__dirname + "/public/js"),
+        path: path.resolve(__dirname + "public/js"),
         filename: "[name]-[hash:5].js",
-        // chunkFilename: "[name].[hash].chunk.js"
+        chunkFilename: "[name].[hash].chunk.js"
     },
-    optimization: {
-        usedExports: true,
-        // mergeDuplicateChunks: true,
-        splitChunks: {
-            chunks: "all"
-        }
-    },
+    // optimization: {
+    //     usedExports: true,
+    //     // mergeDuplicateChunks: true,
+    //     splitChunks: {
+    //         chunks: "all"
+    //     }
+    // },
+
     // entry:{
     //     app: path.resolve(__dirname + "/test/main.js")
     // },
@@ -39,8 +40,7 @@ module.exports = {
             {
                 test: /\.js/,
                 exclude: /node_modules/,
-                loader: "babel-loader",
-                include: /app/
+                loader: "babel-loader"
             },
             {
                 test: /\.css$/,
@@ -59,7 +59,7 @@ module.exports = {
         extractSass,
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            filename: path.resolve(__dirname + "/public/index.html"),
+            filename: path.resolve(__dirname + "public/index.html"),
             template: "./index.html",
             chunks: ["app"],
             minify: {

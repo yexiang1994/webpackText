@@ -1,10 +1,14 @@
+var {CleanWebpackPlugin} = require("clean-webpack-plugin")
+var path = require("path")
 
 module.exports = {
     entry:{
-        app: "./app/i.ts"
+        app: "./cssTest/app.js"
     },
     output: {
-        filename: "./dist/[name]-[hash:8].js"
+        path: path.resolve(__dirname,"dist"),
+        filename: "boundle.js",
+        publicPath: "./dist/"
     },
     module: {
         rules: [
@@ -24,8 +28,22 @@ module.exports = {
                     // }
                 },
                 exclude: '/node_module/'
+            },
+            {
+                test: /\.css$/,
+                use:[{
+                        loader:"style-loader",
+                        options: {
+                            insert: "#app"
+                        }
+                    }, {
+                        loader: "css-loader",
+                }]
             }
             
         ]
-    }
+    },
+    plugins:[
+        // new CleanWebpackPlugin()
+    ]
 }

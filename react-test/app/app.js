@@ -8,12 +8,27 @@ import {Router, Route, hashHistory } from 'react-router';
 // import "core-js/modules/es.promise";
 // import "core-js/modules/es.array.iterator";
 // import Loadable from 'react-loadable';
-import Loading from './pages/loading'
+// import Loading from './pages/loading'
 // import pa from './test/a'
 // import pb from './test/b'
-import {pa,pb} from './inx'
+// import {pa,pb} from './inx'
 
-console.log(pa);
+async function getPage() {
+	 const login = await import(/* webpackChunkName:"login" */"./pages/loginPage/index").then(rs=>{
+		console.log(2);
+	 })
+	 const container = await import(/* webpackChunkName:"login" */"./pages/container/index").then(rs=>{
+		console.log(2);
+	 })
+
+	 ReactDom.render((<Router history={hashHistory}>
+		<Route path="/" component={login}/>
+		<Route path="/login" component={login}/>
+		<Route path="/dashboard" component={container}></Route>
+		<Route path="/Loading" component={container}></Route>
+	</Router>), document.getElementById('app'))
+}
+getPage()
 
 // const DashboardPageLoad = loadable(()=> import('./pages/container'))
 // console.log(DashboardPageLoad, "DashboardPageLoad");
@@ -39,13 +54,7 @@ console.log(pa);
 // 	loading: Loading
 // })
 
-ReactDom.render((<Router history={hashHistory}>
-	<Route path="/" component={pa}/>
-	<Route path="/login" component={pa}/>
-	<Route path="/dashboard" component={pb}></Route>
-	<Route path="/Loading" component={Loading}></Route>
-	
-</Router>), document.getElementById('app'))
+
 
 // export default class App extends Component{
 	
