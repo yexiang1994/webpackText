@@ -58,7 +58,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-1": "^6.24.1",
-    "chart.js": "^2.7.2",
+    "chart.js": "^2.9.4",
     "echarts": "^4.3.0",
     "echarts-for-react": "^2.0.15-beta.0",
     "esri-loader": "^2.6.0",
