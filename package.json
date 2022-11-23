@@ -65,7 +65,7 @@
     "react-dom": "^15.4.2",
     "react-modal-bootstrap": "^1.1.1",
     "react-remodal": "^1.0.3",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "socket.io-client": "^2.3.0"
   }
 }
